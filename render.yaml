@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: incident-agent
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.11
+      - key: AIPIPE_TOKEN
+        sync: false
+      - key: LLM_MODEL
+        value: cohere/north-mini-code:free
+      - key: LLM_BASE_URL
+        value: https://aipipe.org/openrouter/v1
+      - key: LLM_TIMEOUT_SECONDS
+        value: "12"
+      - key: LLM_MAX_TOKENS
+        value: "1600"
+      - key: MAX_REQUEST_BYTES
+        value: "4000000"
+      - key: DB_PATH
+        value: /tmp/incidents.db
