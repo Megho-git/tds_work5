@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: incident-agent
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: AIPIPE_TOKEN
+        sync: false
+      - key: LLM_MODEL
+        value: google/gemini-2.0-flash-lite-001
+      - key: LLM_BASE_URL
+        value: https://aipipe.org/openrouter/v1
+      - key: DB_PATH
+        value: /tmp/incidents.db
